@@ -10,11 +10,13 @@ fun main() {
                 array.add(it)
             }
         }
+        if (size > 0) {
+            println("Result of first task:")
+            firstTask(array)
+            println("Result of second task:")
+            secondTask(array)
+        }
     }
-    println("Result of first task:")
-    firstTask(array)
-    println("Result of second task:")
-    secondTask(array)
 }
 
 fun firstTask(array: List<Int>) =
