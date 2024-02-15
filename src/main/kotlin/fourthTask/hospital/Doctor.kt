@@ -1,5 +1,7 @@
 package fourthTask.hospital
 
+import fourthTask.Human
+
 data class Doctor(
     override val fullName: String,
     override val gender: Boolean,

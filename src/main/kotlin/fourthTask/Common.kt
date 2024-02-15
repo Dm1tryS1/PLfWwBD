@@ -1,4 +1,4 @@
-package fourthTask.hospital
+package fourthTask
 
 import kotlin.random.Random
 
