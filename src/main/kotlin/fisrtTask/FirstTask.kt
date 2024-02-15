@@ -18,6 +18,17 @@ fun main() {
                 )
             )
         }
+//        TODO: For these vectors complementarity = true
+        array.add(
+            Vector(Pair(1, 0), Pair(-1, 0), Pair(2, 0))
+        )
+        array.add(
+            Vector(Pair(0, 0), Pair(1, 0), Pair(-1, 0))
+        )
+        array.add(
+            Vector(Pair(2, 0), Pair(-2, 0), Pair(4, 0))
+        )
+
 
 
         if (it > 2) {
@@ -108,6 +119,6 @@ class Vector(private val x: Pair<Int, Int>, private val y: Pair<Int, Int>, priva
         (vector.x.second - vector.x.first), (vector.y.second - vector.y.first), (vector.z.second - vector.z.first)
     )
 
-    override fun toString() = "$x, $y, $z"
+    override fun toString() = "$x-$y-$z"
 
 }
