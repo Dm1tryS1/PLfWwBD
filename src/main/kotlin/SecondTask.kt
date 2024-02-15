@@ -1,5 +1,7 @@
 package org.example
 
+import kotlin.math.abs
+
 fun main() {
     val array = mutableListOf<Int>()
     println("Input N:")
@@ -21,7 +23,7 @@ fun main() {
 
 fun firstTask(array: List<Int>) =
     array.filter {
-        it.toString() == it.toString().reversed()
+        abs(it).toString() == abs(it).toString().reversed()
     }.printList()
 
 
