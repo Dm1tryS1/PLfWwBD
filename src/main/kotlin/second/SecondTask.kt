@@ -1,4 +1,4 @@
-package secondTask
+package second
 
 import kotlin.math.min
 import kotlin.random.Random
@@ -18,7 +18,12 @@ fun main() {
             println("Input address")
             val address = readln()
             println("Input phone number")
-            val phoneNumber = readln()
+            val phoneNumber = try {
+                checkPhoneNumberFormat(readln())
+            } catch (e: PhoneNumberException) {
+                println("Wrong input")
+                ""
+            }
 
             listOfAbiturient.add(
                 Abiturient(
@@ -41,11 +46,22 @@ fun main() {
             })
 
             println("Input average mark:")
-            val avg = readln().toDoubleOrNull() ?: 3.0
-            println("Abiturientes with mark greater than $avg:")
-            println(listOfAbiturient.filter { abiturient ->
-                abiturient.mark.sum() / abiturient.mark.size > avg
-            })
+            try {
+                readln().toInt().let { avg ->
+                    if (avg in 2..5) {
+                        println("Abiturientes with mark greater than $avg:")
+                        println(listOfAbiturient.filter { abiturient ->
+                            abiturient.mark.sum() / abiturient.mark.size > avg
+                        })
+                    } else {
+                        throw AverageMarkException()
+                    }
+                }
+            } catch (e: AverageMarkException) {
+                println(e.message)
+            } catch (e: Exception) {
+                println("Something went wrong")
+            }
 
             println("Input n:")
             val n = readln().toIntOrNull() ?: 1
@@ -70,5 +86,25 @@ data class Abiturient(
     val thirdName: String,
     val address: String,
     val phoneNumber: String,
-    val mark: List<Int> = listOf((2..5).random(), (2..5).random(), (2..5).random(), (2..5).random(), (2..5).random())
+    val mark: List<Int> = listOf(
+        (2..5).random(),
+        (2..5).random(),
+        (2..5).random(),
+        (2..5).random(),
+        (2..5).random()
+    )
 )
+
+fun checkPhoneNumberFormat(value: String): String {
+    val symbols = "0123456789"
+    val notFormattedValue = value.lowercase()
+    if (notFormattedValue.any { it !in symbols } || notFormattedValue.length == 11) {
+        throw PhoneNumberException()
+    } else {
+        return notFormattedValue
+    }
+}
+
+class PhoneNumberException(override val message: String = "Wrong phone number format") : Exception()
+
+class AverageMarkException(override val message: String = "Wrong average mark value") : Exception()

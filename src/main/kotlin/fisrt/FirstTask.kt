@@ -8,47 +8,57 @@ fun main() {
     val range = (-100..100)
 
     println("Input n")
-    readln().toIntOrNull()?.let {
-        repeat(it) {
-            array.add(
-                Vector(
-                    Pair(range.random(), range.random()),
-                    Pair(range.random(), range.random()),
-                    Pair(range.random(), range.random()),
+    try {
+        readln().toInt().let {
+            repeat(it) {
+                array.add(
+                    Vector(
+                        Pair(range.random(), range.random()),
+                        Pair(range.random(), range.random()),
+                        Pair(range.random(), range.random()),
+                    )
                 )
-            )
-        }
+            }
 //        TODO: For these vectors complementarity = true
-        array.add(
-            Vector(Pair(1, 0), Pair(-1, 0), Pair(2, 0))
-        )
-        array.add(
-            Vector(Pair(0, 0), Pair(1, 0), Pair(-1, 0))
-        )
-        array.add(
-            Vector(Pair(2, 0), Pair(-2, 0), Pair(4, 0))
-        )
+            array.add(
+                Vector(Pair(1, 0), Pair(-1, 0), Pair(2, 0))
+            )
+            array.add(
+                Vector(Pair(0, 0), Pair(1, 0), Pair(-1, 0))
+            )
+            array.add(
+                Vector(Pair(2, 0), Pair(-2, 0), Pair(4, 0))
+            )
 
+            try {
+                println("Vectors is equals: ${array[0].equalsOfVector(array[0])}")
+            } catch (e: NumberFormatException) {
+                println("Negative expression under the root")
+            }
 
-
-        if (it > 2) {
-            val complementarity = mutableListOf<List<Vector>>()
-            for (i in 0..array.size - 3) {
-                for (j in i + 1..array.size - 2) {
-                    for (k in j + 1..<array.size) {
-                        if (array[i].сheckComplementarity(array[j], array[k])) {
-                            complementarity.add(listOf(array[i], array[j], array[k]))
+            if (it > 2) {
+                val complementarity = mutableListOf<List<Vector>>()
+                for (i in 0..array.size - 3) {
+                    for (j in i + 1..array.size - 2) {
+                        for (k in j + 1..<array.size) {
+                            if (array[i].сheckComplementarity(array[j], array[k])) {
+                                complementarity.add(listOf(array[i], array[j], array[k]))
+                            }
                         }
-                    }
 
+                    }
+                }
+
+                complementarity.forEachIndexed { i, item ->
+                    println("${i + 1} complementarity")
+                    println(item.map { vector -> vector.toString() })
                 }
             }
-
-            complementarity.forEachIndexed { i, item ->
-                println("${i + 1} complementarity")
-                println(item.map { vector -> vector.toString() })
-            }
         }
+    } catch (e: NumberFormatException) {
+        println("N is not number")
+    } catch (e: Exception) {
+        println("Something went wrong")
     }
 }
 
@@ -81,8 +91,15 @@ class Vector(private val x: Pair<Int, Int>, private val y: Pair<Int, Int>, priva
         return matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[1][2] * matrix[2][1]) + (-1) * matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0]) + matrix[0][2] * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0]) == 0
     }
 
-    fun equalsOfVector(vector: Vector): Boolean = length(vector) == length(this) && checkDirection(vector)
-
+    fun equalsOfVector(vector: Vector): Boolean {
+        val firstLen = length(vector)
+        val secondLen = length(this)
+        if (!firstLen.isNaN() && !secondLen.isNaN()) {
+            return secondLen == firstLen
+        } else {
+            throw NumberFormatException()
+        }
+    }
 
     private fun intersection(
         x11: Int,

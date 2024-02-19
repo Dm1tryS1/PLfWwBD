@@ -1,34 +1,43 @@
-package fisrtTask
+package fisrt
 
 fun main() {
     val array = mutableListOf<Matrix>()
 
     println("Input n")
-    readln().toIntOrNull()?.let {
-        repeat(it) {
-            array.add(Matrix())
-        }
-
-        println("Matrix's:")
-        array.forEach { println(it) }
-
-        println("Multiplications:")
-        array.forEachIndexed { first, _ ->
-            array.forEachIndexed { second, _ ->
-                println(array[first].multiplication(array[second]))
+    try {
+        readln().toInt().let {
+            repeat(it) {
+                array.add(Matrix())
             }
+
+            println("Matrix's:")
+            array.forEach { println(it) }
+
+            println("Multiplications:")
+            array.forEachIndexed { first, _ ->
+                array.forEachIndexed { second, _ ->
+                    println(array[first].multiplication(array[second]))
+                }
+            }
+
+            println("Matrix with smallest first norm:")
+            println(array.map { matrix ->
+                Pair(matrix.firstNorm(), matrix)
+            }.minBy { item -> item.first }.second)
+
+            println("Matrix with smallest second norm:")
+            println(array.map { matrix ->
+                Pair(matrix.secondNorm(), matrix)
+            }.minBy { item -> item.first }.second)
         }
-
-        println("Matrix with smallest first norm:")
-        println(array.map { matrix ->
-            Pair(matrix.firstNorm(), matrix)
-        }.minBy { item -> item.first }.second)
-
-        println("Matrix with smallest second norm:")
-        println(array.map { matrix ->
-            Pair(matrix.secondNorm(), matrix)
-        }.minBy { item -> item.first }.second)
+    } catch (e: NumberFormatException) {
+        println("N is not number")
+    } catch (e: OutOfMemoryError) {
+        println("N is too big")
+    } catch (e: Exception) {
+        println("Something went wrong")
     }
+
 
 }
 

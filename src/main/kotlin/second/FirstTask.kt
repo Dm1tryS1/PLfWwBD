@@ -1,7 +1,7 @@
-package secondTask
+package second
 
-import secondTask.Patient.Companion.LEFT_BORDER
-import secondTask.Patient.Companion.RIGHT_BORDER
+import second.Patient.Companion.LEFT_BORDER
+import second.Patient.Companion.RIGHT_BORDER
 import kotlin.random.Random
 
 fun main() {
@@ -44,24 +44,39 @@ fun main() {
         println("All patients:")
         println(listOfPatient)
 
-        if (it > 0) {
-            println("Input diagnosis name")
-            val diagnosis = readln()
-            println("Patients:")
-            println(listOfPatient.filter { patient ->
-                patient.diagnosis.name == diagnosis
-            })
-            println("Input left border")
-            val leftBorder = readln().toIntOrNull() ?: LEFT_BORDER
-            println("Input right border")
-            val rightBorder = readln().toIntOrNull() ?: RIGHT_BORDER
-            println("Patients:")
-            println(listOfPatient.filter { patient ->
-                patient.numberMedic in (leftBorder..rightBorder)
-            })
+        try {
+
+            if (it > 0) {
+                println("Input diagnosis name")
+                val diagnosis = readln()
+                if (listOfDiagnosis.contains(Diagnosis(name = diagnosis))) {
+                    println("Patients:")
+                    println(listOfPatient.filter { patient ->
+                        patient.diagnosis.name == diagnosis
+                    })
+
+                    println("Input left border")
+                    val leftBorder = readln().toIntOrNull() ?: LEFT_BORDER
+                    println("Input right border")
+                    val rightBorder = readln().toIntOrNull() ?: RIGHT_BORDER
+                    println("Patients:")
+                    println(listOfPatient.filter { patient ->
+                        patient.numberMedic in (leftBorder..rightBorder)
+                    })
+                } else {
+                    throw DiagnosisException()
+                }
+            } else {
+                throw EmptyListException()
+            }
+        } catch (e: PatientException) {
+            println(e.message)
+        } catch (e: Exception) {
+            println("Something went wrong")
         }
     }
 }
+
 
 data class Patient(
     val id: Int = Random.nextInt(),
@@ -83,3 +98,9 @@ data class Diagnosis(
     val id: Int = Random.nextInt(),
     val name: String
 )
+
+open class PatientException : Exception()
+
+class DiagnosisException(override val message: String = "No such diagnosis") : PatientException()
+
+class EmptyListException(override val message: String = "List is empty") : PatientException()
