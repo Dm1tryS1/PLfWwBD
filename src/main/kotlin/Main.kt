@@ -1,7 +1,7 @@
 package org.example
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.*
+
 fun main() {
     firstTask()
     secondTask()
@@ -10,12 +10,12 @@ fun main() {
 }
 
 fun firstTask() {
-    val result = INPUT_STRING.split(" ").stream().limit(2).reduce { t, u -> "$t $u" }.get()
+    val result = INPUT_STRING.split(" ").stream().skip(1).limit(2).reduce { t, u -> "$t $u" }.get()
     println(result)
 }
 
 fun secondTask() {
-    val result = INPUT_STRING.split(" ").stream().skip(1).limit(2).reduce { t, u -> "$t $u" }.get()
+    val result = INPUT_STRING.split(" ").stream().sorted(Collections.reverseOrder()).toList()
     println(result)
 }
 
